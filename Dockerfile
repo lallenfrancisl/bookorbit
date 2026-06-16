@@ -47,7 +47,7 @@ ENV KOBO_CLOUDSCRAPER_PYTHON=/opt/bookorbit-python/bin/python
 COPY server/requirements/kobo-cloudscraper.txt /tmp/kobo-cloudscraper-requirements.txt
 
 RUN apk upgrade --no-cache && \
-    apk add --no-cache poppler-utils su-exec ffmpeg python3 py3-pip && \
+    apk add --no-cache poppler-utils su-exec ffmpeg python3 py3-pip iproute2 && \
     python3 -m venv /opt/bookorbit-python && \
     /opt/bookorbit-python/bin/python -m pip install --no-cache-dir -r /tmp/kobo-cloudscraper-requirements.txt && \
     rm -f /tmp/kobo-cloudscraper-requirements.txt && \
