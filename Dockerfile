@@ -21,8 +21,6 @@ RUN pnpm --filter client run build-only
 FROM base AS server-builder
 WORKDIR /app
 
-RUN ls -a
-COPY .env ./
 COPY package.json pnpm-workspace.yaml pnpm-lock.yaml ./
 COPY packages/types/package.json ./packages/types/
 COPY server/package.json ./server/
