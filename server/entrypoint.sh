@@ -58,6 +58,15 @@ urlencode() {
   node -e 'process.stdout.write(encodeURIComponent(process.argv[1]))' "$1"
 }
 
+# Add host.docker.internal if not present
+if ! getent hosts host.docker.internal > /dev/null 2>&1; then
+    GATEWAY_IP=$(ip route | grep default | awk '{print $3}')
+    if [ ! -z "$GATEWAY_IP" ]; then
+        echo "$GATEWAY_IP host.docker.internal" >> /etc/hosts
+        echo "✓ Added host.docker.internal -> $GATEWAY_IP"
+    fi
+fi
+
 if [ -z "$DATABASE_URL" ]; then
   encoded_user="$(urlencode "$POSTGRES_USER")"
   encoded_password="$(urlencode "$POSTGRES_PASSWORD")"
