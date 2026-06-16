@@ -21,6 +21,7 @@ RUN pnpm --filter client run build-only
 FROM base AS server-builder
 WORKDIR /app
 
+COPY .env ./
 COPY package.json pnpm-workspace.yaml pnpm-lock.yaml ./
 COPY packages/types/package.json ./packages/types/
 COPY server/package.json ./server/
@@ -60,7 +61,6 @@ COPY --from=server-builder --chown=node:node /deploy ./
 COPY --from=client-builder --chown=node:node /app/client/dist ./public
 COPY --from=server-builder --chown=node:node /app/server/entrypoint.sh ./entrypoint.sh
 COPY --chown=node:node server/bin/kepubify/ ./bin/kepubify/
-COPY .env ./
 
 RUN chmod +x /app/entrypoint.sh /app/bin/kepubify/* && mkdir -p /books /data/covers /data/book-bucket /tmp && chown -R node:node /data /tmp
 
